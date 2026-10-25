@@ -1,0 +1,119 @@
+Ques-5
+
+youngest and eldest age calculation and salary slip generation using constructors.
+
+#include <iostream>
+#include <cstring>
+#include <limits>
+using namespace std;
+
+class Person
+{
+    char name[64];
+    int age;
+    char address[64];
+    float basic, hra, da, totalSalary;
+
+public:
+    Person()
+    {
+        strcpy(name, "");
+        age = 0;
+        strcpy(address, "");
+        basic = hra = da = totalSalary = 0;
+    }
+
+    Person(const char n[], int a, const char addr[],
+           float b, float h, float d)
+    {
+        strcpy(name, n);
+        age = a;
+        strcpy(address, addr);
+        basic = b;
+        hra = h;
+        da = d;
+        totalSalary = basic + hra + da;
+    }
+
+    int getAge()
+    {
+        return age;
+    }
+
+    void displaySalarySlip()
+    {
+        cout << "\n------ SALARY SLIP ------\n";
+        cout << "Name: " << name << endl;
+        cout << "Age: " << age << endl;
+        cout << "Address: " << address << endl;
+        cout << "Basic Salary: " << basic << endl;
+        cout << "HRA: " << hra << endl;
+        cout << "DA: " << da << endl;
+        cout << "Total Salary: " << totalSalary << endl;
+    }
+
+    inline static void findYoungestEldest(Person p[], int n)
+    {
+        int youngest = p[0].age;
+        int eldest = p[0].age;
+
+        for (int i = 1; i < n; i++)
+        {
+            if (p[i].age < youngest)
+                youngest = p[i].age;
+
+            if (p[i].age > eldest)
+                eldest = p[i].age;
+        }
+
+        cout << "\nYoungest Age: " << youngest << endl;
+        cout << "Eldest Age: " << eldest << endl;
+    }
+};
+
+int main()
+{
+    Person p[10];
+
+    char name[64], address[64];
+    int age;
+    float basic, hra, da;
+
+    for (int i = 0; i < 10; i++)
+    {
+        cout << "\nEnter details of Person " << i + 1 << endl;
+
+        cout << "Enter Name: ";
+        cin.getline(name, 64);
+
+        cout << "Enter Address: ";
+        cin.getline(address, 64);
+
+        cout << "Enter Age: ";
+        cin >> age;
+
+        cout << "Enter Basic Salary: ";
+        cin >> basic;
+
+        cout << "Enter HRA: ";
+        cin >> hra;
+
+        cout << "Enter DA: ";
+        cin >> da;
+
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        p[i] = Person(name, age, address, basic, hra, da);
+    }
+
+    Person::findYoungestEldest(p, 10);
+
+    cout << "\nSALARY SLIPS OF ALL PERSONS\n";
+
+    for (int i = 0; i < 10; i++)
+    {
+        p[i].displaySalarySlip();
+    }
+
+    return 0;
+}
