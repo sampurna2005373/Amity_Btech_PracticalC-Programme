@@ -1,0 +1,46 @@
+Aim: To write a C++ program to check whether a given number and a string are palindromes.
+
+Program
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main()
+{
+    int num, original, reversed = 0, digit;
+    string str, rev = "";
+
+    // Check number palindrome
+    cout << "Enter a number: ";
+    cin >> num;
+
+    original = num;
+
+    while (num > 0)
+    {
+        digit = num % 10;
+        reversed = reversed * 10 + digit;
+        num = num / 10;
+    }
+
+    if (original == reversed)
+        cout << original << " is a number palindrome." << endl;
+    else
+        cout << original << " is not a number palindrome." << endl;
+
+    // Check string palindrome
+    cout << "\nEnter a string: ";
+    cin >> str;
+
+    for (int i = str.length() - 1; i >= 0; i--)
+    {
+        rev += str[i];
+    }
+
+    if (str == rev)
+        cout << str << " is a string palindrome." << endl;
+    else
+        cout << str << " is not a string palindrome." << endl;
+
+    return 0;
+}
