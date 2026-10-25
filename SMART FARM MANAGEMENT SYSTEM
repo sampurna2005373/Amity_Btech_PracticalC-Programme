@@ -1,0 +1,183 @@
+#include <iostream>
+#include <fstream>
+#include <iomanip>
+#include <string>
+#include <vector>
+#include <memory>
+#include <stdexcept>
+
+using namespace std;
+
+// Abstract class
+class Advisory {
+public:
+    virtual void giveAdvice() const = 0;
+
+    virtual ~Advisory() = default;
+};
+
+// Base class
+class Crop {
+protected:
+    string name;
+    double area;
+    string season;
+    double yieldPerAcre;
+
+    static int cropCount;
+
+public:
+    // Default constructor
+    Crop()
+        : name("Unknown"), area(1.0),
+          season("Summer"), yieldPerAcre(1.0) {
+        cropCount++;
+    }
+
+    // Parameterized constructor
+    Crop(string n, double a, string s, double y)
+        : name(n), area(a), season(s), yieldPerAcre(y) {
+
+        if (a <= 0 || y <= 0) {
+            throw invalid_argument(
+                "Area and yield per acre must be positive."
+            );
+        }
+
+        cropCount++;
+    }
+
+    // Virtual destructor
+    virtual ~Crop() = default;
+
+    // Calculate total yield
+    virtual double calculateTotalYield() const {
+        return area * yieldPerAcre;
+    }
+
+    // Display crop details
+    virtual void display() const {
+        cout << fixed << setprecision(2);
+        cout << "\nCrop Name       : " << name;
+        cout << "\nCultivated Area : " << area << " acres";
+        cout << "\nSeason          : " << season;
+        cout << "\nYield Per Acre  : "
+             << yieldPerAcre << " tonnes";
+        cout << "\nTotal Yield     : "
+             << calculateTotalYield() << " tonnes\n";
+    }
+
+    // Operator overloading to compare yields
+    bool operator>(const Crop& other) const {
+        return calculateTotalYield() >
+               other.calculateTotalYield();
+    }
+
+    // Save crop details to a file
+    virtual void saveToFile(ofstream& file) const {
+        file << "Crop Name: " << name
+             << ", Area: " << area
+             << " acres, Season: " << season
+             << ", Yield Per Acre: " << yieldPerAcre
+             << " tonnes, Total Yield: "
+             << calculateTotalYield() << " tonnes\n";
+    }
+
+    // Static member function
+    static int getCropCount() {
+        return cropCount;
+    }
+};
+
+// Initialize static data member
+int Crop::cropCount = 0;
+
+// Derived class: CerealCrop
+class CerealCrop : public Crop, public Advisory {
+private:
+    string fertilizerType;
+
+public:
+    // Constructor 1
+    CerealCrop(string n, double a, string s,
+               double y, string fertilizer)
+        : Crop(n, a, s, y),
+          fertilizerType(fertilizer) {
+    }
+
+    // Constructor 2: overloaded constructor
+    CerealCrop(string n, double a, double y)
+        : Crop(n, a, "Rabi", y),
+          fertilizerType("NPK") {
+    }
+
+    void display() const override {
+        cout << "\n--- Cereal Crop Details ---\n";
+        Crop::display();
+        cout << "Fertilizer Type : "
+             << fertilizerType << "\n";
+    }
+
+    void giveAdvice() const override {
+        cout << "Farming Advice: Use balanced fertilizer "
+             << "and monitor soil nutrients for "
+             << name << ".\n";
+    }
+
+    void saveToFile(ofstream& file) const override {
+        Crop::saveToFile(file);
+        file << "Crop Type: Cereal, Fertilizer: "
+             << fertilizerType << "\n";
+    }
+};
+
+// Derived class: VegetableCrop
+class VegetableCrop : public Crop, public Advisory {
+private:
+    int irrigationFrequency;
+
+public:
+    // Constructor 1
+    VegetableCrop(string n, double a, string s,
+                  double y, int irrigation)
+        : Crop(n, a, s, y),
+          irrigationFrequency(irrigation) {
+
+        if (irrigation <= 0) {
+            throw invalid_argument(
+                "Irrigation frequency must be positive."
+            );
+        }
+    }
+
+    // Constructor 2: overloaded constructor
+    VegetableCrop(string n, double a, double y)
+        : Crop(n, a, "Summer", y),
+          irrigationFrequency(3) {
+    }
+
+    void display() const override {
+        cout << "\n--- Vegetable Crop Details ---\n";
+        Crop::display();
+        cout << "Irrigation Frequency: "
+             << irrigationFrequency
+             << " times per week\n";
+    }
+
+    void giveAdvice() const override {
+        cout << "Farming Advice: Maintain proper soil "
+             << "moisture and avoid overwatering "
+             << name << ".\n";
+    }
+
+    void saveToFile(ofstream& file) const override {
+        Crop::saveToFile(file);
+        file << "Crop Type: Vegetable, Irrigation: "
+             << irrigationFrequency
+             << " times per week\n";
+    }
+};
+
+// Main function
+int main() {
+    try {
