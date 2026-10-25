@@ -1,0 +1,85 @@
+Que No -6
+
+Covering both unary operator overloading (++, --) and binary operator overloading (+, -) for complex numbers.
+
+
+#include <iostream>
+using namespace std;
+
+class Complex
+{
+    int real, imag;
+
+public:
+    Complex(int r = 0, int i = 0)
+    {
+        real = r;
+        imag = i;
+    }
+
+    // Unary operator overloading: ++
+    void operator++()
+    {
+        real++;
+        imag++;
+    }
+
+    // Unary operator overloading: --
+    void operator--()
+    {
+        real--;
+        imag--;
+    }
+
+    // Binary operator overloading: +
+    Complex operator+(Complex c)
+    {
+        Complex temp;
+        temp.real = real + c.real;
+        temp.imag = imag + c.imag;
+        return temp;
+    }
+
+    // Binary operator overloading: -
+    Complex operator-(Complex c)
+    {
+        Complex temp;
+        temp.real = real - c.real;
+        temp.imag = imag - c.imag;
+        return temp;
+    }
+
+    void display()
+    {
+        cout << real << " + " << imag << "i" << endl;
+    }
+};
+
+int main()
+{
+    Complex c1(5, 3), c2(2, 1), c3;
+
+    cout << "First Complex Number: ";
+    c1.display();
+
+    cout << "Second Complex Number: ";
+    c2.display();
+
+    ++c1;
+    cout << "After Increment: ";
+    c1.display();
+
+    --c1;
+    cout << "After Decrement: ";
+    c1.display();
+
+    c3 = c1 + c2;
+    cout << "Addition: ";
+    c3.display();
+
+    c3 = c1 - c2;
+    cout << "Subtraction: ";
+    c3.display();
+
+    return 0;
+}
