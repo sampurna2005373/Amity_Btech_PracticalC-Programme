@@ -1,0 +1,98 @@
+Question - 8
+Student Exam Result 
+
+
+
+#include <iostream>
+using namespace std;
+
+class Student
+{
+protected:
+    int rollno;
+    char name[50];
+
+public:
+    void getStudent()
+    {
+        cout << "Enter Roll Number: ";
+        cin >> rollno;
+
+        cout << "Enter Student Name: ";
+        cin >> name;
+    }
+
+    void displayStudent()
+    {
+        cout << "\nRoll Number: " << rollno << endl;
+        cout << "Student Name: " << name << endl;
+    }
+};
+
+class Exam : public Student
+{
+protected:
+    float marks[6];
+
+public:
+    void getMarks()
+    {
+        cout << "\nEnter marks in six subjects:\n";
+
+        for (int i = 0; i < 6; i++)
+        {
+            cout << "Subject " << i + 1 << ": ";
+            cin >> marks[i];
+        }
+    }
+
+    void displayMarks()
+    {
+        cout << "\nMarks in Six Subjects:\n";
+
+        for (int i = 0; i < 6; i++)
+        {
+            cout << "Subject " << i + 1 << ": "
+                 << marks[i] << endl;
+        }
+    }
+};
+
+class Result : public Exam
+{
+private:
+    float total;
+
+public:
+    void calculate()
+    {
+        total = 0;
+
+        for (int i = 0; i < 6; i++)
+        {
+            total += marks[i];
+        }
+    }
+
+    void displayResult()
+    {
+        displayStudent();
+        displayMarks();
+
+        cout << "\nTotal Marks: " << total << " out of 600" << endl;
+    }
+};
+
+int main()
+{
+    Result r;
+
+    r.getStudent();
+    r.getMarks();
+    r.calculate();
+
+    cout << "\n---------- STUDENT RESULT ----------\n";
+    r.displayResult();
+
+    return 0;
+}
