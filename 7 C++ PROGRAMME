@@ -1,0 +1,46 @@
+Question No. 7: Find the area of a circle, rectangle, and triangle using function overloading
+
+
+
+#include <iostream>
+using namespace std;
+
+class AREA
+{
+public:
+    void area(float r)
+    {
+        cout << "Area of Circle = " << 3.14 * r * r << endl;
+    }
+
+    void area(float l, float b)
+    {
+        cout << "Area of Rectangle = " << l * b << endl;
+    }
+
+    void area(double b, double h)
+    {
+        cout << "Area of Triangle = " << 0.5 * b * h << endl;
+    }
+};
+
+int main()
+{
+    AREA a;
+    float r, l, b;
+    double base, height;
+
+    cout << "Enter radius of circle: ";
+    cin >> r;
+    a.area(r);
+
+    cout << "Enter length and breadth of rectangle: ";
+    cin >> l >> b;
+    a.area(l, b);
+
+    cout << "Enter base and height of triangle: ";
+    cin >> base >> height;
+    a.area(base, height);
+
+    return 0;
+}
